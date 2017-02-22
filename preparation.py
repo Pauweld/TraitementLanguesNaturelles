@@ -230,8 +230,27 @@ def getProtoSuffixes():
         
     return sorted(suffProto)
     
-
+def getProtoWithRadical(W,r):
+    L = getProtoSuffixes()
+    L = 
+    L_final = []
+    for i in L:
+        if len(r) < len(i) and r==i[len(r)]:
+            L_final.append(i)
+    return L_final
+    
 def getAllSuffixes():
+    S0 = getProtoSuffixes()
+    W = getWordList()
+
+    for w in W:
+        for m in S0:
+            if w[-len(m):]==m:
+                S1 = getProtoSuffixes()
+                for a in S1:
+                    pass
+                
+        
     return ""
 
 def DejeanStemmer():
@@ -241,4 +260,5 @@ def DejeanStemmer():
 
 if __name__ == '__main__':
     #print(getSuffix())
-    print(getProtoSuffixes())
+    #print(getProtoSuffixes())
+    print(getProtoWithRadical(''))
