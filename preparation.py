@@ -53,6 +53,35 @@ def gutHeaders(txt, name):
 
     return order_words
 
+def getAllWords(txt):
+    fichier = open(txt, 'r', encoding="utf-8")
+    fin_head = 0
+    while (fin_head != 24):
+        fichier.readline()
+        fin_head += 1
+    body = ""
+    lines = fichier.readlines()
+    for line in lines:
+        if '*** END OF THIS PROJECT' in line:
+            break
+        body += line
+
+    p = re.compile('[a-zA-Z]+')
+    words = re.findall(p, body)
+    words2 = []
+    for i in range(0,len(words)):
+        if(words[i].isupper()):
+            words[i] = words[i].lower()
+            fichier2.write(words[i])
+            fichier2.write('\n')
+            words2.append(words[i])
+        elif(words[i].islower()):
+            fichier2.write(words[i])
+            fichier2.write('\n')
+            words2.append(words[i])
+
+    return words2
+
 
 def stemmer_snowball_en():
     fichier = open('data/en2_snowball.txt', 'w')
@@ -280,7 +309,38 @@ def getAllSuffixes():
     return S_final
 
 def DejeanStemmer():
-    return ""
+    fichier = open('data/fr5.txt', 'w')
+    listWords = getAllWords('data/texte-fr.txt')
+    nbWords = len(listWords)
+    listSuff = getAllSuffixes()
+    dicOccWords = dict()
+    rejectedWords = []
+    for w in listWords:
+        if w not in dicOccWords.keys():
+            dicOccWords[w] = 1
+        else:
+            dicOccWords[w] += 1
+    listWords = sorted(list(set(listWords)))
+    for w in listWords:
+        if ((dicOccWords[w] * 100)/nbWords) > 0.02:
+            rejectedWords.append(w)
+
+    racines = []
+    listSuff.sort(key=len, reverse=True)
+    find = False
+    for w in listWords:
+        find = False
+        if w not in rejectedWords:
+            for suff in listSuff:
+                if (len(w) > len(suff) and w[-len(suff):] == suff):
+                    find = True
+                    racines.append(w[:-len(suff)])
+                    fichier.write(w[:-len(suff)])
+                    break
+
+    return racines
+            
+    
         
     
 
