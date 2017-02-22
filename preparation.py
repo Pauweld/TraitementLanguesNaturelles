@@ -211,18 +211,42 @@ def getProtoSuffixes():
     L = getSuffix()
     L_in = dict()
     suffProto = []
+    suffixesAtester = []
     for i in L:
-        length = len(i[0])
-        for j in L:
-            if(i[0] in j[0][-length:] and len(j[0]) == length+1 and j[0] != i[0]):
-                L_in[j[0]] = j[1]
-        if (len(L_in) != 0):
-            L_in = sorted(L_in.items())
-            r = testeSuffixe(i[0], i[1], L_in)
-            L_in = dict()
-            if(r != None):
-                for k in r:
-                    suffProto.append(k)
+        if (len(suffixesAtester) != 0):
+            while len(suffixesAtester) != 0:
+                s = suffixesAtester[0]
+                length = len(s)
+                for j in L:
+                    if(s in j[0][-length:] and len(j[0]) == length+1 and j[0] != s):
+                        L_in[j[0]] = j[1]
+                if (len(L_in) != 0):
+                    L_in = sorted(L_in.items())
+                    r = testeSuffixe(s, i[1], L_in)
+                    L_in = dict()
+                    if(r != None and len(r) > 0):
+                        for k in r:
+                            suffixesAtester.append(k)
+                    else:
+                    #if(r != None and isinstance(r, list) != True):
+                        suffProto.append(s)
+                suffixesAtester.pop(0)
+        else:
+            s = i[0]
+            length = len(i[0])
+            for j in L:
+                if(s in j[0][-length:] and len(j[0]) == length+1 and j[0] != s):
+                    L_in[j[0]] = j[1]
+            if (len(L_in) != 0):
+                L_in = sorted(L_in.items())
+                r = testeSuffixe(s, i[1], L_in)
+                L_in = dict()
+                if(r != None and len(r) > 0):
+                    for k in r:
+                        suffixesAtester.append(k)
+                else:
+                #if(r != None and isinstance(r, list) != True):
+                    suffProto.append(s)
 
     for suff in suffProto:
         fichier.write(suff)
@@ -230,7 +254,6 @@ def getProtoSuffixes():
         
     return sorted(suffProto)
     
-
 def getAllSuffixes():
     return ""
 
