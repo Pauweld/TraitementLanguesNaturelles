@@ -166,7 +166,7 @@ def getSuffix():
     for k in L:
         if L[k] > 20:
             S[k] = L[k]
-    print("suffixes=", sorted(S.items()), "\n")
+    #print("suffixes=", sorted(S.items()), "\n")
     return sorted(S.items())
 
 def testeSuffixe(suffix, nbMots, L):
@@ -207,27 +207,29 @@ def testeSuffixe(suffix, nbMots, L):
         return suffixesAtester
 
 def getProtoSuffixes():
+    fichier = open('data/suffProto.txt', 'w')
     L = getSuffix()
     L_in = dict()
     suffProto = []
-    n = 1
     for i in L:
-        print(i)
         length = len(i[0])
-        if(length == n):
-            print(n)
-            for j in L:
-                if(i[0] in j[0][-length:] and len(j[0]) == length+1 and j[0] != i[0]):
-                    L_in[j[0]] = j[1]
-            if (len(L_in) != 0):
-                L_in = sorted(L_in.items())
-                r = testeSuffixe(i[0], i[1], L_in)
-                L_in = dict()
-                if(r != None):
-                    for k in r:
-                        suffProto.append(k)
-        n += 1
-    print(sorted(suffProto))
+        for j in L:
+            if(i[0] in j[0][-length:] and len(j[0]) == length+1 and j[0] != i[0]):
+                L_in[j[0]] = j[1]
+        if (len(L_in) != 0):
+            L_in = sorted(L_in.items())
+            r = testeSuffixe(i[0], i[1], L_in)
+            L_in = dict()
+            if(r != None):
+                for k in r:
+                    suffProto.append(k)
+
+    for suff in suffProto:
+        fichier.write(suff)
+        fichier.write("\n")
+        
+    return sorted(suffProto)
+    
 
 def getAllSuffixes():
     return ""
@@ -238,4 +240,5 @@ def DejeanStemmer():
     
 
 if __name__ == '__main__':
-    getProtoSuffixes()
+    #print(getSuffix())
+    print(getProtoSuffixes())
