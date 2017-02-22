@@ -228,6 +228,12 @@ def getProtoSuffixes():
                         suffProto.append(k)
         n += 1
     print(sorted(suffProto))
+
+def getAllSuffixes():
+    return ""
+
+def DejeanStemmer():
+    return ""
         
     
 
