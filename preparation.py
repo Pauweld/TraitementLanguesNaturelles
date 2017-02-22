@@ -190,8 +190,8 @@ def testeSuffixe(suffix, nbMots, L):
             newSuffix = l[0]
             if l[1] > S_nbOccLettre2:
                 suffixesAtester.append(newSuffix)
-                print('l[1]=',l[1], ', S_nbOccLettre2=',S_nbOccLettre2)
-                print('on continue l\'évaluation avec [', newSuffix, ']') 
+                #print('l[1]=',l[1], ', S_nbOccLettre2=',S_nbOccLettre2)
+                #print('on continue l\'évaluation avec [', newSuffix, ']') 
             elif l[1] > S_nbOccLettre2Groupe:
                 suffixesAtester_tempo.append(newSuffix)
                 somme=somme+l[1]
@@ -202,8 +202,8 @@ def testeSuffixe(suffix, nbMots, L):
         if len(suffixesAtester)==0:
             if N > S_nbMinLettres:
                 suffixesTrouves.append(True)
-                print('N=', N, ', S_nbMinLettres=', S_nbMinLettres)
-                print('[', suffix, '] est un suffixe')
+                #print('N=', N, ', S_nbMinLettres=', S_nbMinLettres)
+                #print('[', suffix, '] est un suffixe')
         return suffixesAtester
 
 def getProtoSuffixes():
@@ -251,29 +251,33 @@ def getProtoSuffixes():
         fichier.write("\n")
         
     return sorted(set(suffProto))
-    
-def getProtoWithRadical(W,r):
-    L = getProtoSuffixes()
-    L = 
-    L_final = []
-    for i in L:
-        if len(r) < len(i) and r==i[len(r)]:
-            L_final.append(i)
-    return L_final
-    
 
+def getProtoAndTermWithRadical(r,W):
+    L_final_proto = []
+    L_final_term = []
+    L = getProtoSuffixes()
+    for i in W:
+        if len(r)<len(i) and r==i[:len(r)]:
+            if  i[-len(r):] not in L_final_term:
+                L_final_term.append(i[len(r):])
+                if i[len(r):] in L and i[len(r):] not in L_final_proto:
+                    L_final_proto.append(i[len(r):])
+    return L_final_proto, L_final_term
+    
 def getAllSuffixes():
     S0 = getProtoSuffixes()
-    W = getWordList()
-
+    S_final = getProtoSuffixes()
+    W = gutHeaders('data/texte-fr.txt','fr')
+    print(S0)
     for w in W:
         for m in S0:
             if w[-len(m):]==m:
-                S1 = getProtoSuffixes()
-                for a in S1:
-                    pass
-     
-    return ""
+                S1,S2 = getProtoAndTermWithRadical(w[:-len(m)],W)
+                if len(S2) < len(S1)/2:
+                    for a in S2:
+                        s_final.append(a)
+                        print(a)
+    return S_final
 
 def DejeanStemmer():
     return ""
@@ -283,4 +287,4 @@ def DejeanStemmer():
 if __name__ == '__main__':
     #print(getSuffix())
     #print(getProtoSuffixes())
-    print(getProtoWithRadical(''))
+    print(getAllSuffixes())
