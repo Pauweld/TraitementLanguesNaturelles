@@ -252,31 +252,33 @@ def getProtoSuffixes():
         
     return sorted(set(suffProto))
 
-def getProtoAndTermWithRadical(r,W):
+def getProtoAndTermWithRadical(r,W,L):
     L_final_proto = []
     L_final_term = []
-    L = getProtoSuffixes()
     for i in W:
         if len(r)<len(i) and r==i[:len(r)]:
-            if  i[-len(r):] not in L_final_term:
-                L_final_term.append(i[len(r):])
-                if i[len(r):] in L and i[len(r):] not in L_final_proto:
-                    L_final_proto.append(i[len(r):])
+            if  i[len(r):] and i[len(r):] in L:
+                L_final_proto.append(i[len(r):])
+            elif len(i[len(r):])<8:
+                    L_final_term.append(i[len(r):])
     return L_final_proto, L_final_term
     
 def getAllSuffixes():
+    f = open('data/suffAll.txt','w')
     S0 = getProtoSuffixes()
     S_final = getProtoSuffixes()
     W = gutHeaders('data/texte-fr.txt','fr')
-    print(S0)
     for w in W:
-        for m in S0:
-            if w[-len(m):]==m:
-                S1,S2 = getProtoAndTermWithRadical(w[:-len(m)],W)
+        for s in S0:
+            if w[len(w)-len(s):]==s:
+                S1,S2 = getProtoAndTermWithRadical(w[:-len(s)],W,S0)
                 if len(S2) < len(S1)/2:
                     for a in S2:
-                        s_final.append(a)
-                        print(a)
+                        if a not in S_final:
+                            S_final.append(a)
+    for a in S_final:
+        f.write(a+'\n')
+    f.close()
     return S_final
 
 def DejeanStemmer():
@@ -286,5 +288,12 @@ def DejeanStemmer():
 
 if __name__ == '__main__':
     #print(getSuffix())
-    #print(getProtoSuffixes())
+    #print(getAllSuffixes())
+    W = gutHeaders('data/texte-fr.txt','fr')
+    r='abandonn'
+    L = ['a', 'ai', 'aient', 'ait', 'ant', 'au', 'aux', 'bles', 'c', 'd', 'dre', 'e', 'ement', 'ents', 'er', 'ers', 'es', 'eur', 'eurs', 'eux', 'ez', 'g', 'ge', 'ges', 'h', 'he', 'i', 'ie', 'ient', 'ine', 'ique', 'ir', 'ire', 'is', 'l', 'le', 'lement', 'les', 'lle', 'ment', 'nait', 'nce', 'nt', 'nte', 'nts', 'on', 'ons', 'que', 'rait', 're', 'rent', 'res', 'saient', 'sait', 'sant', 'se', 'sement', 'ssait', 'te', 'tes', 'tion', 'u', 'ues', 'urs', 'use', 'usement', 'ux']
+    print(getProtoAndTermWithRadical(r,W,L))
+
     print(getAllSuffixes())
+
+    
