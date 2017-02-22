@@ -67116,6 +67116,7 @@ club
 et
 de
 sa
+<<<<<<< HEAD
 voix
 calme
 voici
