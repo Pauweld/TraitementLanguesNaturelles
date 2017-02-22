@@ -228,7 +228,6 @@ def getProtoSuffixes():
                         for k in r:
                             suffixesAtester.append(k)
                     else:
-                    #if(r != None and isinstance(r, list) != True):
                         suffProto.append(s)
                 suffixesAtester.pop(0)
         else:
@@ -245,14 +244,13 @@ def getProtoSuffixes():
                     for k in r:
                         suffixesAtester.append(k)
                 else:
-                #if(r != None and isinstance(r, list) != True):
                     suffProto.append(s)
 
-    for suff in suffProto:
+    for suff in sorted(set(suffProto)):
         fichier.write(suff)
         fichier.write("\n")
         
-    return sorted(suffProto)
+    return sorted(set(suffProto))
     
 def getAllSuffixes():
     return ""
